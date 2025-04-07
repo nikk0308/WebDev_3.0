@@ -1,0 +1,101 @@
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    networks:
+      - default
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  user-service:
+    image: node:20-bookworm
+    container_name: user-service
+    working_dir: /usr/src/app
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=mydb
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - postgres
+      - rabbitmq
+    volumes:
+      - ./user-service:/usr/src/app
+    stdin_open: true
+
+  venue-service:
+    image: node:20-bookworm
+    container_name: venue-service
+    working_dir: /usr/src/app
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=mydb
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - postgres
+      - rabbitmq
+    volumes:
+      - ./venue-service:/usr/src/app
+    stdin_open: true
+
+  booking-service:
+    image: node:20-bookworm
+    container_name: booking-service
+    working_dir: /usr/src/app
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=mydb
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - postgres
+      - rabbitmq
+    volumes:
+      - ./booking-service:/usr/src/app
+    stdin_open: true
+
+  api-gateway:
+    image: node:20-bookworm
+    container_name: api-gateway
+    working_dir: /usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./api-gateway:/usr/src/app
+    environment:
+      - NODE_ENV=development
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    stdin_open: true
