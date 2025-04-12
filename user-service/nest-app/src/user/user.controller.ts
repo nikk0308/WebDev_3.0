@@ -18,10 +18,22 @@ export class UserController {
     return this.userService.register(createUserDto);
   }
 
+  @MessagePattern('findBy')
+  public async findBy(@Payload() createUserDto: CreateUserDto) {
+    this.logger.log(`Received find request: ${JSON.stringify(createUserDto)}`);
+    return this.userService.findUser(createUserDto.email);
+  }
+
   @MessagePattern('login')
   public async login(@Payload() loginUserDto: LoginUserDto) {
     this.logger.log(`Received login request: ${JSON.stringify(loginUserDto)}`);
     return this.userService.login(loginUserDto);
+  }
+
+  @MessagePattern('isDataCorrect')
+  public async isDataCorrect(@Payload() loginUserDto: LoginUserDto) {
+    this.logger.log(`Received is correct request: ${JSON.stringify(loginUserDto)}`);
+    return this.userService.isCorrect(loginUserDto);
   }
 
   @MessagePattern('hello')

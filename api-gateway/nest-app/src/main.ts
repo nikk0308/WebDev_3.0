@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
+import { GlobalExceptionFilter } from './global-exception.filter';
 
 const pack = require('./../package.json');
 
@@ -18,6 +19,7 @@ async function bootstrap() {
     },
   });
 
+  app.useGlobalFilters(new GlobalExceptionFilter());
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
