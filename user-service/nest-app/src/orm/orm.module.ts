@@ -7,7 +7,7 @@ console.log(__dirname);
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || '127.0.0.1',
+      host: process.env.DB_HOST || 'postgres',
       port: parseInt(process.env.DB_PORT || '5432', 10),
       username: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
@@ -17,7 +17,7 @@ console.log(__dirname);
       synchronize: true,
       // migrationsTableName: 'migrations',
       migrations: [__dirname + '/../../migrations/*.{js,ts}'],
-      entities: [__dirname + '/../../user/*.entity.{js,ts}'],
+      entities: [__dirname + '/../**/*.entity.{js,ts}'],
       // migrationsRun: true,
     }),
   ],

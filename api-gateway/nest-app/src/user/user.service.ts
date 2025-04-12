@@ -1,6 +1,8 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { catchError, firstValueFrom, throwError, timeout } from 'rxjs';
+import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -39,6 +41,14 @@ export class UserService {
       }
       throw e;
     }
+  }
+
+  public async register(createUserDto: CreateUserDto) {
+    return this.send('register', createUserDto);
+  }
+
+  public async login(loginDto: LoginUserDto) {
+    return this.send('login', loginDto);
   }
 
   public async hello(){
