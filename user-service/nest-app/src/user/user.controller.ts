@@ -1,4 +1,4 @@
-import { Logger, Controller, ValidationPipe } from '@nestjs/common';
+import { Logger, Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,22 +18,10 @@ export class UserController {
     return this.userService.register(createUserDto);
   }
 
-  @MessagePattern('findBy')
-  public async findBy(@Payload() createUserDto: CreateUserDto) {
-    this.logger.log(`Received find request: ${JSON.stringify(createUserDto)}`);
-    return this.userService.findUser(createUserDto.email);
-  }
-
   @MessagePattern('login')
   public async login(@Payload() loginUserDto: LoginUserDto) {
     this.logger.log(`Received login request: ${JSON.stringify(loginUserDto)}`);
     return this.userService.login(loginUserDto);
-  }
-
-  @MessagePattern('isDataCorrect')
-  public async isDataCorrect(@Payload() loginUserDto: LoginUserDto) {
-    this.logger.log(`Received is correct request: ${JSON.stringify(loginUserDto)}`);
-    return this.userService.isCorrect(loginUserDto);
   }
 
   @MessagePattern('find_user_by_id')

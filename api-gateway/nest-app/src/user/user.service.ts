@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { catchError, firstValueFrom, throwError, timeout } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -44,16 +44,10 @@ export class UserService {
   }
 
   public async register(createUserDto: CreateUserDto) {
-    if (await this.send('findBy', createUserDto)) {
-      throw new HttpException('Користувач з таким email вже існує', HttpStatus.CONFLICT);
-    }
     return this.send('register', createUserDto);
   }
 
   public async login(loginDto: LoginUserDto) {
-    if (!(await this.send('isDataCorrect', loginDto))) {
-      throw new HttpException('Неправильний email або пароль', HttpStatus.NOT_FOUND);
-    }
     return this.send('login', loginDto);
   }
 

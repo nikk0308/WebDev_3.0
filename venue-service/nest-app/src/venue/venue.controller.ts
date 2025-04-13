@@ -1,4 +1,4 @@
-import { Logger, Controller, ValidationPipe } from '@nestjs/common';
+import { Logger, Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { VenueService } from './venue.service';
 import { CreateVenueDto } from './dto/create-venue.dto';

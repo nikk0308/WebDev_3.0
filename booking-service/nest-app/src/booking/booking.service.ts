@@ -1,9 +1,9 @@
-import { Inject, Injectable, Logger, NotFoundException, ConflictException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException, ConflictException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Booking } from './booking.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { AvailableSlot } from './available-slot.entity';
 
 @Injectable()
@@ -20,23 +20,25 @@ export class BookingService {
   private readonly logger = new Logger(BookingService.name);
 
   async create(createBookingDto: CreateBookingDto) {
-    this.logger.log(`Started creating in BookingService`);
-
     const user = await this.userServiceClient
       .send('find_user_by_id', { id: createBookingDto.user_id })
       .toPromise();
     if (!user) {
-      throw new NotFoundException('Користувач не знайдений');
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Користувач не знайдений',
+      });
     }
-    this.logger.log(`User passed in BookingService`);
 
     const venue = await this.venueServiceClient
       .send('find_venue_by_id', { id: createBookingDto.venue_id })
       .toPromise();
     if (!venue) {
-      throw new NotFoundException('Стадіон не знайдений');
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Стадіон не знайдений',
+      });
     }
-    this.logger.log(`Venue passed in BookingService`);
 
     const slot = await this.slotRepository.findOne({
       where: {
@@ -47,11 +49,17 @@ export class BookingService {
     });
 
     if (!slot) {
-      throw new NotFoundException('Слот не знайдений');
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Слот не знайдений',
+      });
     }
 
-    if (slot.is_available === false) {
-      throw new ConflictException('Слот вже зайнятий');
+    if (!slot.is_available) {
+      throw new RpcException({
+        statusCode: HttpStatus.CONFLICT,
+        message: 'Слот вже зайнятий',
+      });
     }
 
     const booking = this.bookingRepository.create({
@@ -59,7 +67,6 @@ export class BookingService {
       user,
       venue,
     });
-    this.logger.log(`Booking passed in BookingService`);
 
     slot.is_available = false;
     await this.slotRepository.save(slot);
@@ -78,7 +85,10 @@ export class BookingService {
     });
 
     if (!booking) {
-      throw new NotFoundException('Бронювання не знайдено');
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Бронювання не знайдено',
+      });
     }
 
     const slot = await this.slotRepository.findOne({
@@ -90,7 +100,10 @@ export class BookingService {
     });
 
     if (!slot) {
-      throw new NotFoundException('Слот для бронювання не знайдений');
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Слот для бронювання не знайдений',
+      });
     }
 
     slot.is_available = true;
@@ -100,6 +113,6 @@ export class BookingService {
   }
 
   public hello(text: string) {
-    return 'hello my friend ' + text;
+    return 'Booking service in booking-service response: ' + text;
   }
 }

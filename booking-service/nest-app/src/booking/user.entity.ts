@@ -1,5 +1,4 @@
-﻿import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Booking } from './booking.entity';
+﻿import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('users')
 export class User {

@@ -1,9 +1,10 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Venue } from './venue.entity';
 import { AvailableSlot } from './available-slot.entity';
 import { CreateVenueDto } from './dto/create-venue.dto';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class VenueService {
@@ -18,6 +19,12 @@ export class VenueService {
 
   async create(createVenueDto: CreateVenueDto): Promise<Venue> {
     const venue = this.venueRepository.create(createVenueDto);
+    if (!venue) {
+      throw new RpcException({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Не вдалося створити майданчик',
+      });
+    }
     return await this.venueRepository.save(venue);
   }
 
@@ -26,13 +33,13 @@ export class VenueService {
   }
 
   async findSlots(id: string): Promise<AvailableSlot[]> {
-    this.logger.log(`Processing findSlots request: ${JSON.stringify(id)}`);
     const venue = await this.venueRepository.findOneBy({ id });
-    this.logger.log(`Found venue findSlots request: ${JSON.stringify(venue)}`);
     if (!venue) {
-      throw new NotFoundException('Майданчик не знайдено');
+      throw new RpcException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Майданчик не знайдено',
+      });
     }
-    this.logger.log(`Slots amount: ${JSON.stringify(this.slotRepository.count())}`);
     return this.slotRepository.find({ where: { venue: { id } } });
   }
 
@@ -41,6 +48,6 @@ export class VenueService {
   }
 
   public hello(text : string){
-    return 'hello from venue ' + text;
+    return 'Venue service in venue-service response: ' + text;
   }
 }

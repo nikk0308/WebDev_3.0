@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   postgres:
@@ -25,7 +26,7 @@ services:
   user-service:
     image: node:20-bookworm
     container_name: user-service
-    working_dir: /usr/src/app
+    working_dir: /usr/src/app/nest-app
     ports:
       - "3001:3001"
     environment:
@@ -41,12 +42,14 @@ services:
       - rabbitmq
     volumes:
       - ./user-service:/usr/src/app
+    command: npm run start
     stdin_open: true
+    tty: true
 
   venue-service:
     image: node:20-bookworm
     container_name: venue-service
-    working_dir: /usr/src/app
+    working_dir: /usr/src/app/nest-app
     ports:
       - "3002:3002"
     environment:
@@ -62,12 +65,14 @@ services:
       - rabbitmq
     volumes:
       - ./venue-service:/usr/src/app
+    command: npm run start
     stdin_open: true
+    tty: true
 
   booking-service:
     image: node:20-bookworm
     container_name: booking-service
-    working_dir: /usr/src/app
+    working_dir: /usr/src/app/nest-app
     ports:
       - "3003:3003"
     environment:
@@ -83,12 +88,14 @@ services:
       - rabbitmq
     volumes:
       - ./booking-service:/usr/src/app
+    command: npm run start
     stdin_open: true
+    tty: true
 
   api-gateway:
     image: node:20-bookworm
     container_name: api-gateway
-    working_dir: /usr/src/app
+    working_dir: /usr/src/app/nest-app
     ports:
       - "3000:3000"
     depends_on:
@@ -98,4 +105,6 @@ services:
     environment:
       - NODE_ENV=development
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    command: npm run start
     stdin_open: true
+    tty: true

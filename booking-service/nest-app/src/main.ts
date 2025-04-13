@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import { GlobalRpcExceptionFilter } from './global-rpc-exception.filter';
 const pack = require('./../package.json');
 
 async function bootstrap() {
@@ -18,6 +19,7 @@ async function bootstrap() {
     },
   );
 
+  app.useGlobalFilters(new GlobalRpcExceptionFilter());
   await app.listen();
 
 }
