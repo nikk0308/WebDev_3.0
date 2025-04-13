@@ -36,6 +36,12 @@ export class UserController {
     return this.userService.isCorrect(loginUserDto);
   }
 
+  @MessagePattern('find_user_by_id')
+  public async findUserById(@Payload() data: { id: string }) {
+    this.logger.log(`Received find_user_by_id request: ${JSON.stringify(data)}`);
+    return this.userService.findUserById(data.id);
+  }
+
   @MessagePattern('hello')
   public hello(text : string) {
     this.logger.log('text: ', text);

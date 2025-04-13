@@ -17,7 +17,7 @@ export class UserController {
     return this.usersService.login(loginUserDto);
   }
 
-  @Get('hello')
+  @Get('hello/hello')
   async hello() {
     return this.usersService.hello();
   }

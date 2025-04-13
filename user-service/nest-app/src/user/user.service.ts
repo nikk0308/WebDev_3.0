@@ -35,6 +35,10 @@ export class UserService {
     return !(!user || user.password !== loginDto.password);
   }
 
+  async findUserById(id: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ id });
+  }
+
   public hello(text : string){
     return 'hello my friend ' + text;
   }

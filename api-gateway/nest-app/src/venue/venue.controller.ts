@@ -2,7 +2,7 @@ import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { VenueService } from './venue.service';
 import { CreateVenueDto } from './dto/create-venue.dto';
 
-@Controller('venue')
+@Controller('venues')
 export class VenueController {
   constructor(private readonly venueService: VenueService) {}
 
@@ -24,7 +24,7 @@ export class VenueController {
     return this.venueService.findSlots(id);
   }
 
-  @Get('hello')
+  @Get('hello/hello')
   async hello() {
     return this.venueService.hello();
   }

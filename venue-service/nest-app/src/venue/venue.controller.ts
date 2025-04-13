@@ -27,6 +27,12 @@ export class VenueController {
     return this.venueService.findSlots(id);
   }
 
+  @MessagePattern('find_venue_by_id')
+  public async findVenueById(@Payload() data: { id: string }) {
+    this.logger.log(`Received find_venue_by_id request: ${JSON.stringify(data)}`);
+    return this.venueService.findVenueById(data.id);
+  }
+
   @MessagePattern('hello')
   public hello(text : string) {
     this.logger.log('text: ', text);

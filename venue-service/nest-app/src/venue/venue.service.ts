@@ -36,6 +36,10 @@ export class VenueService {
     return this.slotRepository.find({ where: { venue: { id } } });
   }
 
+  async findVenueById(id: string): Promise<Venue | null> {
+    return this.venueRepository.findOneBy({ id });
+  }
+
   public hello(text : string){
     return 'hello from venue ' + text;
   }
