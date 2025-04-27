@@ -108,3 +108,17 @@ services:
     command: npm run start
     stdin_open: true
     tty: true
+
+  frontend:
+    image: node:20-bookworm
+    container_name: frontend
+    working_dir: /usr/src/app/vite-project
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/usr/src/app
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    command: npm run dev -- --host
+    depends_on:
+      - api-gateway
