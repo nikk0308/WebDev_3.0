@@ -13,7 +13,7 @@ export class UserService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  async register(createUserDto: CreateUserDto): Promise<User> {
+  async register(createUserDto: CreateUserDto): Promise<{ id: string; name: string; email: string }> {
     const user = this.usersRepository.create(createUserDto);
     if (await this.findUser(createUserDto.email)) {
       throw new RpcException({
@@ -21,18 +21,23 @@ export class UserService {
         message: 'Користувач з таким email вже існує',
       });
     }
-    return await this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+    return {
+      id: savedUser.id,
+      name: savedUser.name,
+      email: savedUser.email,
+    };
   }
 
-  async login(loginDto: LoginUserDto): Promise<{ id: string; name: string }> {
+  async login(loginDto: LoginUserDto): Promise<{ id: string; name: string; email: string }> {
     const user = await this.findUser(loginDto.email);
-    if ((!user || user.password !== loginDto.password)){
+    if (!user || user.password !== loginDto.password) {
       throw new RpcException({
         statusCode: HttpStatus.NOT_FOUND,
         message: 'Неправильний email або пароль',
       });
     }
-    return { id: user.id, name: user.name };
+    return { id: user.id, name: user.name, email: user.email };
   }
 
   async findUser(email : string): Promise<User|null> {

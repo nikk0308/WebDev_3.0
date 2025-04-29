@@ -9,14 +9,15 @@ export default function LoginPage() {
   const handleLogin = async ({ email, password }) => {
     try {
       const res = await api.post('/users/login', { email, password });
-      const { name, email: userEmail } = res.data;
-      localStorage.setItem('user', JSON.stringify({ name, email: userEmail }));
+      const { id, name, email: userEmail } = res.data;
+      localStorage.setItem('user', JSON.stringify({ id, name, email: userEmail }));
       navigate('/home');
     } catch (error) {
       console.error('Login error:', error);
       alert('Ошибка входа');
     }
   };
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">

@@ -9,7 +9,8 @@ export default function RegisterPage() {
   const handleRegister = async ({ name, email, password }) => {
     try {
       const res = await api.post('/users/register', { name, email, password });
-      localStorage.setItem('user', JSON.stringify({ name, email }));
+      const { id, name: userName, email: userEmail } = res.data;
+      localStorage.setItem('user', JSON.stringify({ id, name: userName, email: userEmail }));
       navigate('/home');
     } catch (error) {
       console.error('Register error:', error);

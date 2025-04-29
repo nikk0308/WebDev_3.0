@@ -8,7 +8,7 @@ export default function HomePage() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user'));
     if (!userData) {
-      navigate('/'); // если не залогинен — редирект на логин
+      navigate('/');
     } else {
       setUser(userData);
     }
@@ -19,12 +19,47 @@ export default function HomePage() {
     navigate('/');
   };
 
+  const handleCreateVenue = () => {
+    navigate('/venues/create');
+  };
+
+  const handleViewVenues = () => {
+    navigate('/venues');
+  };
+
+  const handleViewBookings = () => {
+    navigate('/bookings');
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 p-4 space-y-4">
       <h1 className="text-3xl font-bold mb-6">Добро пожаловать, {user.name}!</h1>
-      <button onClick={handleLogout} className="text-blue-600 hover:underline">
-        Выйти
-      </button>
+      <div className="flex flex-col space-y-2">
+        <button
+          onClick={handleCreateVenue}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        >
+          Создать новый майданчик
+        </button>
+        <button
+          onClick={handleViewVenues}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        >
+          Посмотреть все майданчики
+        </button>
+        <button
+          onClick={handleViewBookings}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        >
+          Мои бронирования
+        </button>
+        <button
+          onClick={handleLogout}
+          className="text-red-600 hover:underline mt-4"
+        >
+          Выйти
+        </button>
+      </div>
     </div>
   );
 }
