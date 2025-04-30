@@ -37,11 +37,11 @@ export default function CreateVenuePage() {
     e.preventDefault();
     try {
       await api.post('/venues', venue);
-      alert('Майданчик успешно создан!');
+      alert('Майданчик успішно створено!');
       navigate('/home');
     } catch (error) {
-      console.error('Ошибка создания майданчика:', error);
-      alert('Ошибка создания майданчика');
+      console.error('Помилка створення майданчика:', error);
+      alert('Помилка створення майданчика');
     }
   };
 
@@ -51,15 +51,15 @@ export default function CreateVenuePage() {
         onClick={() => navigate('/home')}
         className="mb-6 text-blue-600 hover:underline"
       >
-        Назад на главную
+        Назад на головну
       </button>
 
-      <h1 className="text-2xl font-bold mb-6">Создать новый майданчик</h1>
+      <h1 className="text-2xl font-bold mb-6">Створити новий майданчик</h1>
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
         <input
           type="text"
           name="name"
-          placeholder="Название"
+          placeholder="Назва"
           value={venue.name}
           onChange={handleChange}
           className="w-full p-2 border rounded"
@@ -68,7 +68,7 @@ export default function CreateVenuePage() {
         <input
           type="text"
           name="location"
-          placeholder="Локация"
+          placeholder="Локація"
           value={venue.location}
           onChange={handleChange}
           className="w-full p-2 border rounded"
@@ -85,13 +85,13 @@ export default function CreateVenuePage() {
         />
         <textarea
           name="description"
-          placeholder="Описание (необязательно)"
+          placeholder="Опис (необов'язково)"
           value={venue.description}
           onChange={handleChange}
           className="w-full p-2 border rounded"
         />
 
-        <h2 className="text-xl font-bold">Доступные слоты:</h2>
+        <h2 className="text-xl font-bold">Доступні слоти:</h2>
         {venue.slots.map((slot, index) => (
           <div key={index} className="flex items-center gap-2">
             <input
@@ -111,16 +111,16 @@ export default function CreateVenuePage() {
               required
             />
             <button type="button" onClick={() => removeSlot(index)} className="text-red-500">
-              Удалить
+              Видалити
             </button>
           </div>
         ))}
         <button type="button" onClick={addSlot} className="text-blue-500 hover:underline">
-          Добавить слот
+          Додати слот
         </button>
 
         <button type="submit" className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
-          Создать
+          Створити
         </button>
       </form>
     </div>

@@ -23,7 +23,7 @@ export default function CreateBookingPage() {
       const res = await api.get(`/venues/${venueId}/slots`);
       setSlots(res.data);
     } catch (error) {
-      console.error('Ошибка загрузки слотов:', error);
+      console.error('Помилка завантаження слотів:', error);
     }
   };
 
@@ -35,11 +35,11 @@ export default function CreateBookingPage() {
         start_time: slot.start_time,
         end_time: slot.end_time,
       });
-      alert('Бронирование успешно!');
-      // navigate('/bookings');
+      alert('Бронювання успішне!');
+      navigate('/home');
     } catch (error) {
-      console.error('Ошибка бронирования:', error);
-      alert('Ошибка бронирования');
+      console.error('Помилка бронювання:', error);
+      alert('Помилка бронювання');
     }
   };
 
@@ -49,19 +49,19 @@ export default function CreateBookingPage() {
         onClick={() => navigate('/home')}
         className="mb-6 text-blue-600 hover:underline"
       >
-        Назад на главную
+        Назад на головну
       </button>
-      <h1 className="text-3xl font-bold mb-6">Доступные слоты для бронирования</h1>
+      <h1 className="text-3xl font-bold mb-6">Доступні слоти для бронювання</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {slots.filter(s => s.is_available !== false).map((slot, index) => (
           <div key={index} className="p-4 border rounded shadow bg-white">
-            <p>Начало: {new Date(slot.start_time).toLocaleString()}</p>
-            <p>Конец: {new Date(slot.end_time).toLocaleString()}</p>
+            <p>Початок: {new Date(slot.start_time).toLocaleString()}</p>
+            <p>Кінець: {new Date(slot.end_time).toLocaleString()}</p>
             <button
               onClick={() => handleBooking(slot)}
               className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
             >
-              Забронировать
+              Забронювати
             </button>
           </div>
         ))}

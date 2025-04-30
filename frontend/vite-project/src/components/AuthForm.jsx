@@ -28,7 +28,7 @@ export default function AuthForm({ onSubmit, title, buttonText, showNameField = 
         <input
           type="text"
           name="name"
-          placeholder="Имя"
+          placeholder="Ім'я"
           value={formData.name}
           onChange={handleChange}
           className="border p-2 rounded"
@@ -38,7 +38,7 @@ export default function AuthForm({ onSubmit, title, buttonText, showNameField = 
       <input
         type="email"
         name="email"
-        placeholder="Почта"
+        placeholder="Пошта"
         value={formData.email}
         onChange={handleChange}
         className="border p-2 rounded"

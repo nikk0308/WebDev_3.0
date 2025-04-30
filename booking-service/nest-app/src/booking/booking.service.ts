@@ -75,7 +75,10 @@ export class BookingService {
   }
 
   async findByUser(user_id: string) {
-    return this.bookingRepository.find({ where: { user: { id: user_id } } });
+    return this.bookingRepository.find({
+      where: { user: { id: user_id } },
+      relations: ['venue'],
+    });
   }
 
   async cancel(bookingId: string) {

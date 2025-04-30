@@ -16,7 +16,7 @@ export default function VenueListPage() {
       const res = await api.get('/venues');
       setVenues(res.data);
     } catch (error) {
-      console.error('Ошибка загрузки майданчиков:', error);
+      console.error('Помилка завантаження майданчиків:', error);
     }
   };
 
@@ -34,14 +34,14 @@ export default function VenueListPage() {
         onClick={() => navigate('/home')}
         className="mb-6 text-blue-600 hover:underline"
       >
-        Назад на главную
+        Назад на головну
       </button>
 
-      <h1 className="text-3xl font-bold mb-6">Список майданчиков</h1>
+      <h1 className="text-3xl font-bold mb-6">Список майданчиків</h1>
 
       <input
         type="text"
-        placeholder="Фильтр по типу..."
+        placeholder="Фільтр по типу..."
         value={typeFilter}
         onChange={(e) => setTypeFilter(e.target.value)}
         className="mb-6 p-2 border rounded"
@@ -51,14 +51,14 @@ export default function VenueListPage() {
         {filteredVenues.map((venue) => (
           <div key={venue.id} className="p-4 border rounded shadow bg-white">
             <h2 className="text-xl font-bold">{venue.name}</h2>
-            <p>Локация: {venue.location}</p>
+            <p>Локація: {venue.location}</p>
             <p>Тип: {venue.type}</p>
             {venue.description && <p className="italic">{venue.description}</p>}
             <button
               onClick={() => handleBookNow(venue.id)}
               className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-              Забронировать
+              Забронювати
             </button>
           </div>
         ))}

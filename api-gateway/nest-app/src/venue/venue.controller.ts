@@ -28,4 +28,9 @@ export class VenueController {
   async hello() {
     return this.venueService.hello();
   }
+
+  @Get(':id')
+  async findById(@Param('id') id: string) {
+    return this.venueService.findById(id);
+  }
 }

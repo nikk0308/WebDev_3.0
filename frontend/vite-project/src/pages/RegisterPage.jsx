@@ -14,16 +14,16 @@ export default function RegisterPage() {
       navigate('/home');
     } catch (error) {
       console.error('Register error:', error);
-      alert('Ошибка регистрации');
+      alert('Помилка реєстрації');
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-6">Регистрация</h1>
-      <AuthForm onSubmit={handleRegister} title="Регистрация" buttonText="Зарегистрироваться" showNameField={true} />
+      <h1 className="text-2xl font-bold mb-6">Реєстрація</h1>
+      <AuthForm onSubmit={handleRegister} title="Реєстрація" buttonText="Зареєструватися" showNameField={true} />
       <button onClick={() => navigate('/')} className="mt-4 text-blue-600 hover:underline">
-        Уже есть аккаунт? Войти
+        Вже є акаунт? Увійти
       </button>
     </div>
   );

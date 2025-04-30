@@ -54,6 +54,10 @@ export class VenueService {
     return this.send('findSlots', id);
   }
 
+  public async findById(id: string) {
+    return this.send('find_venue_by_id', { id });
+  }
+
   public async hello(){
     return this.send('hello', 'hello');
   }
