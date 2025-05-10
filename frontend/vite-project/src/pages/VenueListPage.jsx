@@ -49,7 +49,7 @@ export default function VenueListPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredVenues.map((venue) => (
-          <div key={venue.id} className="p-4 border rounded shadow bg-white">
+          <div key={venue.id} className="p-4 border rounded shadow bg-white" data-testid="venue-item">
             <h2 className="text-xl font-bold">{venue.name}</h2>
             <p>Локація: {venue.location}</p>
             <p>Тип: {venue.type}</p>

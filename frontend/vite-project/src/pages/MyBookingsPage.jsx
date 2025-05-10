@@ -83,7 +83,7 @@ export default function MyBookingsPage() {
           const canCancel = now < start;
 
           return (
-            <div key={booking.id} className="p-4 border rounded shadow bg-white">
+            <div key={booking.id} className="p-4 border rounded shadow bg-white" data-testid="booking-item">
               <h2 className="text-lg font-bold">
                 Майданчик: {booking.venue_name}
               </h2>
